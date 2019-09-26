@@ -34,6 +34,7 @@ class App(object):
     def __init__(self, master=object):
         self.root = master
         self.url, self.res = tk.StringVar(), tk.StringVar()
+        self.tar = []
         # self.ArgParser()
         self.Frame()
 
@@ -54,7 +55,7 @@ class App(object):
         self.frm2.pack_propagate(0)
         self.frm2.pack()
 
-        self.frm3 = tk.LabelFrame(self.root, bg="white",
+        self.frm3 = tk.LabelFrame(self.root, bg="gray",
                                   width=frm3_width, height=frm3_height)
         self.frm3.pack_propagate(0)
         self.frm3.pack()
@@ -72,17 +73,17 @@ class App(object):
         
         for key in txt_res:
             btn1 = tk.Radiobutton(self.frm2, text=key, \
-                variable=self.res, value=txt_res.get(key), \
+                value=txt_res.get(key), variable=self.res,
                 relief="solid", width=8)
             # btn1.grid(column=i, row=0)
             btn1.pack(side="left", padx=5, anchor="center")
             btn1.bind("<Button-1>", self.Select)
 
-        self.btn2 = ttk.Button(self.frm2, text='Download')
+        self.btn2 = ttk.Button(self.frm2, text='Download', command=self.Download)
         self.btn2.pack(side="left")
 
 
-        self.log = tk.Message(self.frm3, bg="gray", text='test', \
+        self.log = tk.Message(self.frm3, bg="white", text='test', \
         font=fnt_s, width=frm3_width-20)
         self.log.pack(padx=2, side="top")
 
@@ -97,81 +98,79 @@ class App(object):
 
     def Select(self, event):
         value = event.widget["text"]
-        print(value, self.res.get())
-        url = f"{self.frm_entry.get()}"
-        # url = "https://www.youtube.com/watch?v=5yv9zLChuuE"
+        print(value, txt_res.get(value))
+        for key in txt_res:
+            if value == key:
+                self.var = value
+                self.res = txt_res.get(value)
+        
+        self.log.config(text=f'Press {value} get{self.res}')
+        print(f'Press {value} get{self.res}')
 
-        if url:
+
+
+    def Download(self):
+        url = self.frm_entry.get()            
+
+        if not url:
+            value = 'None url'
+            print(value)
+
+        else:
             print('pass url')
             try:
-                yt = pytube.YouTube( \
+                yt = pytube.YouTube(
                     url, on_progress_callback=self.onProgress)
-            except:
-                print('yt error')
-            for j in txt_res:
-                if value == txt_res[-1]:
+
+                if self.var == list( txt_res.keys() )[-1]:
+                    print(self.var)
                     self.tar = yt.streams.filter(only_audio=True).all()
-                    print(f'res:{j}')
+                    print('123', self.tar)
+                
                 else:
-                    self.tar = yt.streams.filter(file_extension="mp4", res="480p").all()
+                    self.tar = yt.streams.filter(
+                        file_extension="mp4", res=self.res).all()
 
-                if value == txt_btn1[0]:
-                    print('btn1', url)
-                    tar = yt.streams.filter(file_extension="mp4", res="480p").all()
-                elif value == txt_btn1[1]:
-                    print('btn2', url)
-                    tar = yt.streams.filter(file_extension="mp4", res="720p").all()
-                elif value == txt_btn1[2]:
-                    print('btn3', url)
-                    tar = yt.streams.filter(file_extension="mp4", res="720p").all()
-                elif value == txt_btn1[3]:
-                    print('btn4', url)
-                    tar = yt.streams.filter(only_audio=True).all()
+                print(self.tar)
 
-                # print(yt.title)
-                # print(tar)
-                # os.system(" gnome-terminal -e ' call rosservice /Run ' ")
-                
-                # appscript.app("Terminal").do_script(\
-                #     f"tar[0].download(path)"
-                #     )
-
-                # tar[0].download(output_path=path)
-                
-                subprocess.Popen( tar[0].download(path) )
-        else:
-            value  = 'None URL' 
-                      
-        self.log.config(text=f'{value}')
+            except:
+                # print('yt error')
+                value = 'Error: yt'
+                print(value)
+            
+            if self.tar:
+                subprocess.Popen( self.tar[0].download(path), shell=True )
+                # self.tar[0].download(path)
+                # value = f'Download...: {self.percent:05.2f}%\r'
+                # print(value)
+                # self.log.config(text=value)
+            else:
+                value = 'None tar'
+                print(value)
 
 
-    def ArgParser(self):
-        # parser = argparse.ArgumentParser()
-        # args = parser.parse_args()
-        # parser.add_argument("url", help='url for youtube')
-        # parser.add_argument("-fhd", action="store_true", help='1080畫質')
-        # parser.add_argument("-hd", action="store_true", help='720畫質')
-        # parser.add_argument("-sd", action="store_true", help='480畫質')
-        # parser.add_argument("-aud", action="store_true", help='下載mp3')
-        # yt = pytube.YouTube(args.url, on_pregress_callback=self.onProgress)
-        pass
-    
+            # print(yt.title)
+            # print(tar)
+            # os.system(" gnome-terminal -e ' call rosservice /Run ' ")
+
+            # appscript.app("Terminal").do_script(\
+            #     f"tar[0].download(path)"
+            #     )
+
+            # tar[0].download(output_path=path)
+
+            # subprocess.Popen( tar[0].download(path) )
+
         
     def onProgress(self, stream, chunk, handle, remaining):
         total = stream.filesize
-        percent = (total - remaining) / total*100
-        print(f'Download... : {percent:05.2f}%\r')
-        # self.CreateLog(txt=f'Download... : {percent:05.2f}%\r')
+        self.percent = (total - remaining) / total*100
+        msg = f'Download...: {self.percent:05.2f}%\r'
+        self.log.config(text=msg)
+        print(msg)
+        self.log.after(33)
+
         
-        pass
-
-    def CreateLog(self, txt):
-        for info in self.frm3.winfo_children():
-            info.destroy()
-        log = tk.Message(self.frm3, bg="gray", text=txt, \
-            font=fnt_s, width=frm3_width-20)
-        log.pack(padx=2, side="top")
-
 
 if __name__ == "__main__":    
     Base = tk.Tk()
