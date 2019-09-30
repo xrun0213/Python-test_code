@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 #-*- coding: utf-8 -*-
-import appscript, argparse, io, os, pytube, subprocess, sys, time
+import argparse, io, os, pytube, subprocess, sys, time
 import tkinter as tk
 from tkinter import ttk
 
@@ -104,8 +104,8 @@ class App(object):
                 self.var = value
                 self.res = txt_res.get(value)
         
-        self.log.config(text=f'Press {value} get{self.res}')
-        print(f'Press {value} get{self.res}')
+        self.log.config(text='Press {0} get{1}'.format(value, self.res) )
+        print('Press {0} get{1}'.format(value, self.res) )
 
 
 
@@ -153,9 +153,6 @@ class App(object):
             # print(tar)
             # os.system(" gnome-terminal -e ' call rosservice /Run ' ")
 
-            # appscript.app("Terminal").do_script(\
-            #     f"tar[0].download(path)"
-            #     )
 
             # tar[0].download(output_path=path)
 
@@ -165,7 +162,7 @@ class App(object):
     def onProgress(self, stream, chunk, handle, remaining):
         total = stream.filesize
         self.percent = (total - remaining) / total*100
-        msg = f'Download...: {self.percent:05.2f}%\r'
+        msg = 'Download...: {0:05.2f}%\r'.format(self.precent)
         self.log.config(text=msg)
         print(msg)
         self.log.after(33)
@@ -174,7 +171,7 @@ class App(object):
 
 if __name__ == "__main__":    
     Base = tk.Tk()
-    Base.geometry(f"{win_width}x{win_height}")
+    Base.geometry("{0}x{1}".format(win_width, win_height) )
     Base.title(title_en)
 
     App(Base)
