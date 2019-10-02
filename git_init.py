@@ -13,7 +13,7 @@ scr.append(' echo "# git" >> README.md ')
 scr.append(' git init ')
 scr.append(' git add README.md ')
 scr.append(f' git remote add origin git@github.com:xrun0213/{args.repository}.git ')
-scr.append(' git push -u origin master ')
+scr.append(' git push -u origin master -f')
 
 for i in scr:
     os.system(i)
