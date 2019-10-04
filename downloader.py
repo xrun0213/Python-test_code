@@ -4,7 +4,6 @@ import appscript, argparse, io, os, pytube, subprocess, sys, time
 import tkinter as tk
 from tkinter import ttk
 
-##2131323
 ###文字
 title_en, title_ch = 'YouTube Downloader', 'Youtube下載器',
 # txt_res = 'SD', 'HD', 'FHD', 'Audio'
