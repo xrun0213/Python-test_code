@@ -4,7 +4,7 @@ import appscript, argparse, io, os, pytube, subprocess, sys, time
 import tkinter as tk
 from tkinter import ttk
 
-
+##修改測試
 ###文字
 title_en, title_ch = 'YouTube Downloader', 'Youtube下載器',
 # txt_res = 'SD', 'HD', 'FHD', 'Audio'
@@ -124,11 +124,13 @@ class App(object):
                     url, on_progress_callback=self.onProgress)
 
                 if self.var == list( txt_res.keys() )[-1]:
+                    self.type = 'audio'
                     print(self.var)
                     self.tar = yt.streams.filter(only_audio=True).all()
-                    print('123', self.tar)
+                    print(" it's music ", self.tar)
                 
                 else:
+                    self.type = 'vedio'
                     self.tar = yt.streams.filter(
                         file_extension="mp4", res=self.res).all()
 
@@ -145,6 +147,9 @@ class App(object):
                 # value = f'Download...: {self.percent:05.2f}%\r'
                 # print(value)
                 # self.log.config(text=value)
+                if self.type == 'audio':
+                    os.system("/usr/local/Cellar/ffmpeg/ffmpeg -i -vn -ab 320k 'test.mp3' ")
+                    
             else:
                 value = 'None tar'
                 print(value)
@@ -152,7 +157,6 @@ class App(object):
 
             # print(yt.title)
             # print(tar)
-            # os.system(" gnome-terminal -e ' call rosservice /Run ' ")
 
             # appscript.app("Terminal").do_script(\
             #     f"tar[0].download(path)"
