@@ -107,10 +107,8 @@ class App(object):
         print(f'Press {value} get{self.res}')
 
 
-
     def Download(self):
         url = self.frm_entry.get()            
-
         if not url:
             value = 'None url'
             print(value)
