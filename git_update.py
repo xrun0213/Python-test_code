@@ -1,7 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import argparse, io, os, sys
+import argparse, io, os, sys, time
+
+time_str = time.strftime( '%m/%d', time.localtime() )
 
 parser = argparse.ArgumentParser()
 parser.add_argument('branch', help='the branch the file is updated')
@@ -10,7 +12,7 @@ args = parser.parse_args()
 
 scr = []
 scr.append(' git add -A ')
-scr.append(f' git commit -m "{args.message}" ')
+scr.append(f' git commit -m "{args.message} {time_str}" ')
 scr.append(f' git push -u origin master:{args.branch} ')
 
 for i in scr:
