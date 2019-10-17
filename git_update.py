@@ -13,7 +13,7 @@ args = parser.parse_args()
 scr = []
 scr.append(' git add -A ')
 scr.append(f' git commit -m "{args.message} {time_str}" ')
-scr.append(f' git push -u origin master:{args.branch} ')
+scr.append(f' git push -u origin HEAD:{args.branch} ')
 
 for i in scr:
     os.system(i)
