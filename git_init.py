@@ -9,7 +9,7 @@ parser.add_argument('repository', help='name of the repository')
 args = parser.parse_args()
 
 scr = []
-scr.append(' echo "# git" >> README.md ')
+# scr.append(' echo "# git" >> README.md ')
 scr.append(' git init ')
 scr.append(' git add README.md ')
 scr.append(f' git remote add origin git@github.com:xrun0213/{args.repository}.git ')
