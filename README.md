@@ -1,2 +1,1 @@
-# VCS in macOS
-connecting by roslibpy
+# Testing .py in macOS
