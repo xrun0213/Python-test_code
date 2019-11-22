@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-#from tkinter import *
+import tkinter as tk
 from tkinter import messagebox
 from PIL import ImageTk
 import threading
@@ -33,7 +33,7 @@ class App:
     # 创建界面组件
 
     def init_widgets(self):
-        self.cv = Canvas(self.master, background='white', width=GAME_WIDTH, height=GAME_HEIGHT)
+        self.cv = tk.Canvas(self.master, background='white', width=GAME_WIDTH, height=GAME_HEIGHT)
         self.cv.pack()
         # 让画布得到焦点，从而可以响应按键事件
         self.cv.focus_set()
@@ -95,7 +95,7 @@ class App:
             self.t.start()
 
 
-root = Tk()
+root = tk.Tk()
 root.title("弹球游戏")
 root.iconbitmap('images/fklogo.ico')
 root.geometry('%dx%d' % (GAME_WIDTH, GAME_HEIGHT))

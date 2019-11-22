@@ -1,2 +1,2 @@
-# Git
-testing python code
+# VCS in macOS
+connecting by roslibpy
