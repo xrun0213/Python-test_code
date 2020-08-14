@@ -12,7 +12,6 @@ BOARD_Y = 600
 BOARD_WIDTH = 80
 BALL_RADIUS = 9
 
-
 class App:
     def __init__(self, master):
         self.master = master
